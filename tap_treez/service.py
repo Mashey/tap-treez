@@ -26,6 +26,11 @@ def get_token():
   }
 
   response = client.post(url, headers=headers, data=payload_dict)
+  if response.status_code != 200:
+    error = f"There was an error retrieving an access token.  Reason: {response.reason}"
+    print(error)
+    return error
+
   token = response.json()['access_token']
 
   return token
