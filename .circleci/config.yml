@@ -8,7 +8,7 @@ jobs:
       - run:
           command: |
             poetry run pytest
-          name: Test it
+          name: Run Tests
 orbs:
   python: circleci/python@1.3.2
 version: 2.1
