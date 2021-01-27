@@ -14,9 +14,10 @@ def test_product_endpoint():
     assert 'last_updated_at' in product
     assert 'sellable_quantity' in product
     if len(product['sellable_quantity_detail']) > 0:
-      assert 'inventory_type' in product['sellable_quantity_detail'][0]
-      assert 'location' in product['sellable_quantity_detail'][0]
-      assert 'sellable_quantity' in product['sellable_quantity_detail'][0]
+      for sellable_quantity_detail in product['sellable_quantity_detail']:
+        assert 'inventory_type' in sellable_quantity_detail
+        assert 'location' in sellable_quantity_detail
+        assert 'sellable_quantity' in sellable_quantity_detail
 
     assert 'category_type' in product
     assert 'product_configurable_fields' in product
@@ -51,6 +52,14 @@ def test_product_endpoint():
 
     assert 'autoupdate_lab_results' in product
     assert 'lab_results' in product
+    if len(product['lab_results']) > 0:
+      for lab_results in product['lab_results']:
+        assert 'result_type' in lab_results
+        assert 'amount' in lab_results
+        assert 'minimum_value' in lab_results
+        assert 'maximum_value' in lab_results
+        assert 'amount_type' in lab_results
+        
     assert 'above_threshold' in product
     assert 'external_references' in product
     if len(product['external_references']) > 0:
@@ -105,52 +114,53 @@ def test_ticket_endpoint():
     assert 'scheduled_date' in ticket
     assert 'items' in ticket
     if len(ticket['items']) > 0:
-      assert 'product_id' in ticket['items'][0]
-      assert 'barcodes' in ticket['items'][0]
-      assert 'inventory_barcodes' in ticket['items'][0]
-      assert 'location_name' in ticket['items'][0]
-      assert 'inventory_type' in ticket['items'][0]
-      assert 'inventory_id' in ticket['items'][0]
-      assert 'inventory_batch_id' in ticket['items'][0]
-      assert 'size_id' in ticket['items'][0]
-      assert 'product_size_name' in ticket['items'][0]
-      assert 'product_type' in ticket['items'][0]
-      assert 'product_brand' in ticket['items'][0]
-      assert 'quantity' in ticket['items'][0]
-      assert 'price_total' in ticket['items'][0]
-      assert 'price_sell' in ticket['items'][0]
-      assert 'product_unit' in ticket['items'][0]
-      assert 'apply_automatic_discounts' in ticket['items'][0]
-      assert 'POS_discounts' in ticket['items'][0]
-      if len(ticket['items'][0]['POS_discounts']) > 0:
-        for pos_discount in ticket['items'][0]['POS_discounts']:
-          assert 'id' in pos_discount
-          assert 'discount_title' in pos_discount
-          assert 'discount_amount' in pos_discount
-          assert 'discount_method' in pos_discount
-          assert 'cart' in pos_discount
+      for item in ticket['items']:
+        assert 'product_id' in item
+        assert 'barcodes' in item
+        assert 'inventory_barcodes' in item
+        assert 'location_name' in item
+        assert 'inventory_type' in item
+        assert 'inventory_id' in item
+        assert 'inventory_batch_id' in item
+        assert 'size_id' in item
+        assert 'product_size_name' in item
+        assert 'product_type' in item
+        assert 'product_brand' in item
+        assert 'quantity' in item
+        assert 'price_total' in item
+        assert 'price_sell' in item
+        assert 'product_unit' in item
+        assert 'apply_automatic_discounts' in item
+        assert 'POS_discounts' in item
+        if len(item['POS_discounts']) > 0:
+          for pos_discount in item['POS_discounts']:
+            assert 'id' in pos_discount
+            assert 'discount_title' in pos_discount
+            assert 'discount_amount' in pos_discount
+            assert 'discount_method' in pos_discount
+            assert 'cart' in pos_discount
 
-      assert 'discounts' in ticket['items'][0]
-      if len(ticket['items'][0]['discounts']) > 0:
-        for discount in ticket['items'][0]['discounts']:
-          assert 'id' in discount
-          assert 'discount_title' in discount
-          assert 'discount_amount' in discount
-          assert 'discount_method' in discount
-          assert 'savings' in discount
-          assert 'discount_category' in discount
-          assert 'cart' in discount
+        assert 'discounts' in item
+        if len(item['discounts']) > 0:
+          for discount in item['discounts']:
+            assert 'id' in discount
+            assert 'discount_title' in discount
+            assert 'discount_amount' in discount
+            assert 'discount_method' in discount
+            assert 'savings' in discount
+            assert 'discount_category' in discount
+            assert 'cart' in discount
 
-      assert 'tax' in ticket['items'][0]
-      if len(ticket['items'][0]['tax']) > 0:
-        for tax in ticket['items'][0]['tax']:
-          assert 'id' in tax
-          assert 'rate'
-          assert 'tax_name'
-          assert 'amount'
+        assert 'tax' in item
+        if len(item['tax']) > 0:
+          for tax in item['tax']:
+            assert 'id' in tax
+            assert 'rate'
+            assert 'tax_name'
+            assert 'amount'
 
-      assert 'price_target' in ticket['items'][0]
-      assert 'price_target_note' in ticket['items'][0]
+        assert 'price_target' in item
+        assert 'price_target_note' in item
 
     assert 'fees' in ticket
     assert 'payments' in ticket
