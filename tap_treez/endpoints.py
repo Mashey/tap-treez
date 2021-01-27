@@ -32,7 +32,7 @@ def get_products(test=False):
   # Clean this up into a secondary helper method perhaps
   while response_count < json_response['data']['total_count']:
     page += 1
-    if page == 6 and test == True:
+    if page == 3 and test == True:
       return product_list
     response_count += json_response['data']['page_count']
     product_list += json_response['data']['product_list']
@@ -55,7 +55,7 @@ def get_tickets(test=False):
 
   while json_response['ticketList'] != []:
     page += 1
-    if page == 6 and test == True:
+    if page == 3 and test == True:
       return ticket_list
     ticket_list += json_response['ticketList']
     url = f'https://api.treez.io/v2.0/dispensary/{dispensary}/ticket/lastUpdated/after/{last_ticket_date}/page/{page}/pagesize/50'
@@ -80,7 +80,7 @@ def get_customers(test=False):
 
   while json_response['data'] != []:
     page += 1
-    if page == 6 and test == True:
+    if page == 3 and test == True:
       return customer_list
     customer_list += json_response['data']
     url = f'https://api.treez.io/v2.0/dispensary/{dispensary}/customer/lastUpdated/after/{last_customer_date}/page/{page}/pagesize/50'
