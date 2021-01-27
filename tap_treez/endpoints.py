@@ -1,5 +1,3 @@
-import requests
-import json
 import tap_treez.service as service
 
 client = service.create_session()
