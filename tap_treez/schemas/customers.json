@@ -96,6 +96,11 @@
         }
       }
     },
-    "customer_groups": []
+    "customer_groups": {
+      "type": ["null", "array"],
+      "items": {
+        "type": ["null", "string"]
+      }
+    }
   }
 }
