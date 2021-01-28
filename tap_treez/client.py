@@ -24,8 +24,8 @@ class TreezClient:
     }
     return self._client.post(url, headers=headers, data=payload_dict).json()['access_token']
 
-  def fetch_products(self, page):
-    url = f'{self.BASE_URL}/{self.dispensary}/product/product_list'
+  def fetch_products(self, page, last_updated_date='2000-01-01T00:00:00.000-00:00'):
+    url = f'{self.BASE_URL}/{self.dispensary}/product/product_list/lastUpdated/after/{last_updated_date}'
     param_payload = {
         'active': 'true',
         'pagesize': 50,  # Max per page count
@@ -33,10 +33,10 @@ class TreezClient:
     }
     return self._client.get(url, params=param_payload).json()
 
-  def fetch_customers(self, page, last_updated_date='2019-09-18T11:11:36.000-07:00'):
+  def fetch_customers(self, page, last_updated_date='2000-01-01T00:00:00.000-00:00'):
     url = f'{self.BASE_URL}/{self.dispensary}/customer/lastUpdated/after/{last_updated_date}/page/{page}/pagesize/50'
     return self._client.get(url).json()
 
-  def fetch_tickets(self, page, last_updated_date='2019-09-18T11:11:36.000-07:00'):
+  def fetch_tickets(self, page, last_updated_date='2000-01-01T00:00:00.000-00:00'):
     url = f'{self.BASE_URL}/{self.dispensary}/ticket/lastUpdated/after/{last_updated_date}/page/{page}/pagesize/50'
     return self._client.get(url).json()
