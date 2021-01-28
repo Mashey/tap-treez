@@ -27,7 +27,7 @@
     "email": { "type": ["null", "string"] },
     "phone": { "type": ["null", "string"] },
     "notes": { "type": ["null", "string"] },
-    "permit_expiration": { "type": ["null", "string"], "format": "date-time" },
+    "permit_expiration": { "type": ["null", "string"] },
     "physician_first_name": { "type": ["null", "string"] },
     "physician_last_name": { "type": ["null", "string"] },
     "physician_license": { "type": ["null", "string"] },
