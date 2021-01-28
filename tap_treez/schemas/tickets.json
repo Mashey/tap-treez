@@ -164,7 +164,6 @@
       }
     },
     "employee_id": { "type": ["null", "string"] },
-    "cash_drawer_name": { "type": ["null", "string"] },
-    "delivery_route": null
+    "cash_drawer_name": { "type": ["null", "string"] }
   }
 }
