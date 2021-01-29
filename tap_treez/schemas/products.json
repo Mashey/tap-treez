@@ -1,142 +1,142 @@
 {
-  "type": ["object", "null"],
-  "addtionalProperties": false,
-  "properties": {
-    "product_id": { "type": ["null", "string"] },
-    "product_status": { "type": ["null", "string"] },
-    "last_updated_at": { "type": ["null", "string"], "format": "date-time" },
-    "sellable_quantity": { "type": ["null", "number"] },
-    "sellable_quantity_detail": {
-      "type": ["null", "array"],
-      "items": {
-        "type": ["object", "null"],
-        "additionalProperties": false,
-        "properties" : {
-          "inventory_type": { "type": ["null", "string"] },
-          "location": { "type": ["null", "string"] },
-          "sellable_quantity": { "type": ["null", "number"] }
-        }
-      }
-    },
-    "category_type": { "type": ["null", "string"] },
-    "product_configurable_fields": {
-      "type": ["object", "null"],
-      "addtionalProperties": false,
-      "properties": {
-        "name": { "type": ["null", "string"] },
-        "uom": { "type": ["null", "string"] },
-        "brand": { "type": ["null", "string"] },
-        "size": { "type": ["null", "string"] },
-        "amount": { "type": ["null", "number"] },
-        "classification": { "type": ["null", "string"] },
-        "total_mg_thc": { "type": ["null", "number"] },
-        "total_mg_cbd": { "type": ["null", "number"] },
-        "subtype": { "type": ["null", "string"] }
-      }
-    },
-    "pricing": {
-      "type": ["object", "null"],
-      "addtionalProperties": false,
-      "properties": {
-        "price_type": { "type": ["null", "string"] },
-        "price_sell": { "type": ["null", "number"] },
-        "tier_name": { "type": ["null", "string"] }
-      }
-    },
-    "attributes": {
-      "type": ["object", "null"],
-      "addtionalProperties": false,
-      "properties": {
-        "general": {
-          "type": ["null", "array"],
-          "items": {
-            "type": ["null", "string"]
-          }
-        },
-        "flavors": {
-          "type": ["null", "array"],
-          "items": {
-            "type": ["null", "string"]
-          }
-        },
-        "effects": {
-          "type": ["null", "array"],
-          "items": {
-            "type": ["null", "string"]
-          }
-        },
-        "ingredients": {
-          "type": ["null", "array"],
-          "items": {
-            "type": ["null", "string"]
-          }
-        },
-        "internal_tags": {
-          "type": ["null", "array"],
-          "items": {
-            "type": ["null", "string"]
-          }
-        }
-      }
-    },
-    "product_barcodes": {
-      "type": ["null", "array"],
-      "items": {
-        "type": ["object", "null"],
-        "additionalProperties": false,
-        "properties" : {
-          "created_date": { "type": ["null", "string"], "format": "date-time" },
-          "sku": { "type": ["null", "string"] },
-          "type": { "type": ["null", "string"] }
-        }
-      }
-    },
-    "e_commerce": {
-      "type": ["null", "array"],
-      "items": {
-        "type": ["object", "null"],
-        "additionalProperties": false,
-        "properties" : {
-          "all_images": {
+    "type": ["object", "null"],
+    "addtionalProperties": false,
+    "properties": {
+        "product_id": {"type": ["null", "string"]},
+        "product_status": {"type": ["null", "string"]},
+        "last_updated_at": {"type": ["null", "string"], "format": "date-time"},
+        "sellable_quantity": {"type": ["null", "number"]},
+        "sellable_quantity_detail": {
             "type": ["null", "array"],
             "items": {
-              "type": ["null", "string"]
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "inventory_type": {"type": ["null", "string"]},
+                    "location": {"type": ["null", "string"]},
+                    "sellable_quantity": {"type": ["null", "number"]}
+                }
             }
-          },
-          "primary_image": { "type": ["null", "string"] },
-          "menu_title": { "type": ["null", "string"] },
-          "product_description": { "type": ["null", "string"] },
-          "minimum_visible_inventory_level": { "type": ["null", "number"] },
-          "hide_from_menu": { "type": "boolean" }
+        },
+        "category_type": {"type": ["null", "string"]},
+        "product_configurable_fields": {
+            "type": ["object", "null"],
+            "addtionalProperties": false,
+            "properties": {
+                "name": {"type": ["null", "string"]},
+                "uom": {"type": ["null", "string"]},
+                "brand": {"type": ["null", "string"]},
+                "size": {"type": ["null", "string"]},
+                "amount": {"type": ["null", "number"]},
+                "classification": {"type": ["null", "string"]},
+                "total_mg_thc": {"type": ["null", "number"]},
+                "total_mg_cbd": {"type": ["null", "number"]},
+                "subtype": {"type": ["null", "string"]}
+            }
+        },
+        "pricing": {
+            "type": ["object", "null"],
+            "addtionalProperties": false,
+            "properties": {
+                "price_type": {"type": ["null", "string"]},
+                "price_sell": {"type": ["null", "number"]},
+                "tier_name": {"type": ["null", "string"]}
+            }
+        },
+        "attributes": {
+            "type": ["object", "null"],
+            "addtionalProperties": false,
+            "properties": {
+                "general": {
+                    "type": ["null", "array"],
+                    "items": {
+                        "type": ["null", "string"]
+                    }
+                },
+                "flavors": {
+                    "type": ["null", "array"],
+                    "items": {
+                        "type": ["null", "string"]
+                    }
+                },
+                "effects": {
+                    "type": ["null", "array"],
+                    "items": {
+                        "type": ["null", "string"]
+                    }
+                },
+                "ingredients": {
+                    "type": ["null", "array"],
+                    "items": {
+                        "type": ["null", "string"]
+                    }
+                },
+                "internal_tags": {
+                    "type": ["null", "array"],
+                    "items": {
+                        "type": ["null", "string"]
+                    }
+                }
+            }
+        },
+        "product_barcodes": {
+            "type": ["null", "array"],
+            "items": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "created_date": {"type": ["null", "string"], "format": "date-time"},
+                    "sku": {"type": ["null", "string"]},
+                    "type": {"type": ["null", "string"]}
+                }
+            }
+        },
+        "e_commerce": {
+            "type": ["null", "array"],
+            "items": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "all_images": {
+                        "type": ["null", "array"],
+                        "items": {
+                            "type": ["null", "string"]
+                        }
+                    },
+                    "primary_image": {"type": ["null", "string"]},
+                    "menu_title": {"type": ["null", "string"]},
+                    "product_description": {"type": ["null", "string"]},
+                    "minimum_visible_inventory_level": {"type": ["null", "number"]},
+                    "hide_from_menu": {"type": "boolean"}
+                }
+            }
+        },
+        "autoupdate_lab_results": {"type": "boolean"},
+        "lab_results": {
+            "type": ["null", "array"],
+            "items": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "result_type": {"type": ["null", "string"]},
+                    "amount": {"type": ["null", "string"]},
+                    "minimum_value": {"type": ["null", "number"]},
+                    "maximum_value": {"type": ["null", "number"]},
+                    "amount_type": {"type": ["null", "string"]}
+                }
+            }
+        },
+        "above_threshold": {"type": "boolean"},
+        "external_references": {
+            "type": ["null", "array"],
+            "items": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "type": {"type": ["null", "string"]},
+                    "external_id": {"type": ["null", "string"]}
+                }
+            }
         }
-      }
-    },
-    "autoupdate_lab_results": { "type": "boolean" },
-    "lab_results": {
-      "type": ["null", "array"],
-      "items": {
-        "type": ["object", "null"],
-        "additionalProperties": false,
-        "properties": {
-          "result_type": { "type": ["null", "string"] },
-          "amount": { "type": ["null", "string"] },
-          "minimum_value": { "type": ["null", "number"] },
-          "maximum_value": { "type": ["null", "number"] },
-          "amount_type": { "type": ["null", "string"] }
-        }
-      }
-    },
-    "above_threshold": { "type": "boolean" },
-    "external_references": {
-      "type": ["null", "array"],
-      "items": {
-        "type": ["object", "null"],
-        "additionalProperties": false,
-        "properties" : {
-          "type": { "type": ["null", "string"] },
-          "external_id": { "type": ["null", "string"] }
-        }
-      }
     }
-  }
 }
