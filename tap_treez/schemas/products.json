@@ -92,23 +92,20 @@
             }
         },
         "e_commerce": {
-            "type": ["null", "array"],
-            "items": {
-                "type": ["object", "null"],
-                "additionalProperties": false,
-                "properties": {
-                    "all_images": {
-                        "type": ["null", "array"],
-                        "items": {
-                            "type": ["null", "string"]
-                        }
-                    },
-                    "primary_image": {"type": ["null", "string"]},
-                    "menu_title": {"type": ["null", "string"]},
-                    "product_description": {"type": ["null", "string"]},
-                    "minimum_visible_inventory_level": {"type": ["null", "number"]},
-                    "hide_from_menu": {"type": "boolean"}
-                }
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+                "all_images": {
+                    "type": ["null", "array"],
+                    "items": {
+                        "type": ["null", "string"]
+                    }
+                },
+                "primary_image": {"type": ["null", "string"]},
+                "menu_title": {"type": ["null", "string"]},
+                "product_description": {"type": ["null", "string"]},
+                "minimum_visible_inventory_level": {"type": ["null", "integer"]},
+                "hide_from_menu": {"type": ["boolean", "null"] }
             }
         },
         "autoupdate_lab_results": {"type": "boolean"},
