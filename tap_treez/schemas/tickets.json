@@ -16,7 +16,7 @@
                 "role": {"type": ["null", "string"]}
             }
         },
-        "customer_id": {"type": ["null", "number"]},
+        "customer_id": {"type": ["null", "integer"]},
         "ticket_patient_type": {"type": ["null", "string"]},
         "cash_register_id": {"type": ["null", "string"]},
         "order_status": {"type": ["null", "string"]},
