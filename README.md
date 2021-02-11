@@ -72,6 +72,8 @@ All streams from the Treez API are setup to be Incremental.  These are iterated 
 - Primary key fields: `ticket_id`
 - Replication strategy: INCREMENTAL
 - Replication based on: `last_update_at`
+- Foreign Keys: `customer_id`, `employee_id`
 - Nested Tables:
-    - Several
+    - Created By Employee:
+        - Table Name:
 - Transformations: none
