@@ -70,7 +70,7 @@ class ProductInfo(CatalogStream):
                 yield product
 
 
-class CustomerInfo(FullTableStream):
+class CustomerInfo(CatalogStream):
     tap_stream_id = 'customers'
     key_properties = ['customer_id']
     replication_key = 'last_update'
@@ -101,7 +101,7 @@ class CustomerInfo(FullTableStream):
                 yield customer
 
 
-class TicketInfo(FullTableStream):
+class TicketInfo(CatalogStream:
     tap_stream_id = 'tickets'
     key_properties = ['ticket_id']
     replication_key = 'last_updated_at'
