@@ -101,7 +101,7 @@ class CustomerInfo(CatalogStream):
                 yield customer
 
 
-class TicketInfo(CatalogStream:
+class TicketInfo(CatalogStream):
     tap_stream_id = 'tickets'
     key_properties = ['ticket_id']
     replication_key = 'last_updated_at'
