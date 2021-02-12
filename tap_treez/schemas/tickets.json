@@ -1,0 +1,169 @@
+{
+    "type": ["object", "null"],
+    "addtionalProperties": false,
+    "properties": {
+        "type": {"type": ["null", "string"]},
+        "ticket_id": {"type": ["null", "string"]},
+        "order_number": {"type": ["null", "string"]},
+        "external_order_number": {"type": ["null", "string"]},
+        "order_source": {"type": ["null", "string"]},
+        "created_by_employee": {
+            "type": ["object", "null"],
+            "addtionalProperties": false,
+            "properties": {
+                "employee_id": {"type": ["null", "string"]},
+                "name": {"type": ["null", "string"]},
+                "role": {"type": ["null", "string"]}
+            }
+        },
+        "customer_id": {"type": ["null", "integer"]},
+        "ticket_patient_type": {"type": ["null", "string"]},
+        "cash_register_id": {"type": ["null", "string"]},
+        "order_status": {"type": ["null", "string"]},
+        "payment_status": {"type": ["null", "string"]},
+        "date_created": {"type": ["null", "string"], "format": "date-time"},
+        "last_updated_at": {"type": ["null", "string"], "format": "date-time"},
+        "date_closed": {"type": ["null", "string"], "format": "date-time"},
+        "post_tax_pricing": {"type": "boolean"},
+        "sub_total": {"type": ["null", "number"]},
+        "tax_total": {"type": ["null", "number"]},
+        "discount_total": {"type": ["null", "number"]},
+        "total": {"type": ["null", "number"]},
+        "ticket_note": {"type": ["null", "string"]},
+        "refund_reason": {"type": ["null", "string"]},
+        "original_ticket_id": {"type": ["null", "string"]},
+        "delivery_address": {
+            "type": ["object", "null"],
+            "addtionalProperties": false,
+            "properties": {
+                "id": {"type": ["null", "integer"]},
+                "street": {"type": ["null", "string"]},
+                "street2": {"type": ["null", "string"]},
+                "city": {"type": ["null", "string"]},
+                "county": {"type": ["null", "string"]},
+                "state": {"type": ["null", "string"]},
+                "zip": {"type": ["null", "string"]}
+            }
+        },
+        "scheduled_date": {"type": ["null", "string"], "format": "date-time"},
+        "items": {
+            "type": ["null", "array"],
+            "items": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "product_id": {"type": ["null", "string"]},
+                    "barcodes": {
+                        "type": ["null", "array"],
+                        "items": {
+                            "type": ["null", "string"]
+                        }
+                    },
+                    "inventory_barcodes": {
+                        "type": ["null", "array"],
+                        "items": {
+                            "type": ["null", "string"]
+                        }
+                    },
+                    "location_name": {"type": ["null", "string"]},
+                    "inventory_type": {"type": ["null", "string"]},
+                    "inventory_id": {"type": ["null", "string"]},
+                    "inventory_batch_id": {"type": ["null", "string"]},
+                    "size_id": {"type": ["null", "string"]},
+                    "product_size_name": {"type": ["null", "string"]},
+                    "product_type": {"type": ["null", "string"]},
+                    "product_brand": {"type": ["null", "string"]},
+                    "quantity": {"type": ["null", "number"]},
+                    "price_total": {"type": ["null", "number"]},
+                    "price_sell": {"type": ["null", "number"]},
+                    "product_unit": {"type": ["null", "string"]},
+                    "apply_automatic_discounts": {"type": "boolean"},
+                    "POS_discounts": {
+                        "type": ["null", "array"],
+                        "items": {
+                            "type": ["object", "null"],
+                            "additionalProperties": false,
+                            "properties": {
+                                "id": {"type": ["null", "string"]},
+                                "discount_title": {"type": ["null", "string"]},
+                                "discount_amount": {"type": ["null", "number"]},
+                                "discount_method": {"type": ["null", "string"]},
+                                "cart": {"type": "boolean"}
+                            }
+                        }
+                    },
+                    "discounts": {
+                        "type": ["null", "array"],
+                        "items": {
+                            "type": ["object", "null"],
+                            "additionalProperties": false,
+                            "properties": {
+                                "id": {"type": ["null", "string"]},
+                                "discount_title": {"type": ["null", "string"]},
+                                "discount_amount": {"type": ["null", "number"]},
+                                "discount_method": {"type": ["null", "string"]},
+                                "savings": {"type": ["null", "number"]},
+                                "discount_category": {"type": ["null", "string"]},
+                                "cart": {"type": "boolean"}
+                            }
+                        }
+                    },
+                    "tax": {
+                        "type": ["null", "array"],
+                        "items": {
+                            "type": ["object", "null"],
+                            "additionalProperties": false,
+                            "properties": {
+                                "id": {"type": ["null", "string"]},
+                                "rate": {"type": ["null", "number"]},
+                                "tax_name": {"type": ["null", "string"]},
+                                "amount": {"type": ["null", "number"]}
+                            }
+                        }
+                    },
+                    "price_target": {"type": ["null", "number"]},
+                    "price_target_note": {"type": ["null", "string"]}
+                }
+            }
+        },
+        "fees": {
+            "type": ["null", "array"],
+            "items": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "type": {"type": ["null", "string"]},
+                    "total_amount": {"type": ["null", "number"]}
+                }
+            }
+        },
+        "payments": {
+            "type": ["null", "array"],
+            "items": {
+                "type": ["object", "null"],
+                "additionalProperties": false,
+                "properties": {
+                    "payment_id": {"type": ["null", "string"]},
+                    "payment_source": {"type": ["null", "string"]},
+                    "payment_method": {"type": ["null", "string"]},
+                    "amount_paid": {"type": ["null", "number"]},
+                    "payment_date": {"type": ["null", "string"], "format": "date-time"}
+                }
+            }
+        },
+        "reward_eligible": {"type": "boolean"},
+        "reward_points_earned": {"type": ["null", "number"]},
+        "reward_points_used": {"type": ["null", "number"]},
+        "purchase_limit": {
+            "type": ["object", "null"],
+            "addtionalProperties": false,
+            "properties": {
+                "concentrated": {"type": ["null", "string"]},
+                "non_concentrated": {"type": ["null", "string"]},
+                "plant": {"type": ["null", "string"]}
+            }
+        },
+        "employee_id": {"type": ["null", "string"]},
+        "cash_drawer_name": {"type": ["null", "string"]}
+    }
+}

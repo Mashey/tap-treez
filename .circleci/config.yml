@@ -7,8 +7,8 @@ jobs:
           pkg-manager: poetry
       - run:
           command: |
-            poetry run pytest --version
-          name: Test it
+            poetry run pytest
+          name: Run Tests
 orbs:
   python: circleci/python@1.3.2
 version: 2.1

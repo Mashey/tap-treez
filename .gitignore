@@ -6,3 +6,8 @@ tests/cassettes
 .coverage
 *.DS_Store
 poetry.lock
+tap_treez.egg-info
+config.json
+catalog.json
+test.json
+state.json
