@@ -25,7 +25,7 @@ Requirements to get started are API Credentials in the form of an API Key, Clien
 # Streams
 
 ## Incremental Streams
-All streams from the Treez API are setup to be Incremental.  These are iterated based on the Update field for each table.  The update field is then bookmarked for the next stream.
+All streams from the Treez API are setup to be Incremental.  These are iterated based on the Update field for each table.  The update field is then bookmarked for the next stream. (If there is not starting bookmark the beginning sync date is 2000-01-01T00:00:00.000-00:00)
 
 [Customers](https://code.treez.io/reference#customer_api)
 - Primary key fields: `customer_id`
@@ -75,5 +75,27 @@ All streams from the Treez API are setup to be Incremental.  These are iterated 
 - Foreign Keys: `customer_id`, `employee_id`
 - Nested Tables:
     - Created By Employee:
-        - Table Name:
+        - Table Name: `created_by_employee`
+        - Key Fields: `employee_id`
+    - Deliver Address:
+        - Table Name: `deliver_address`
+        - Key Fields: `id`
+    - Items:
+        - Table Name: `items`
+        - Key Field: `product_id`
+        - Nested Tables:
+            - POS Discounts
+                - Table Name: `items.POS_discounts`
+                - Key Fields: `id`
+            - Discounts
+                - Table Name: `items.discounts`
+                - Key Fields: `id`
+            - Tax
+                - Table Name: `items.tax`
+                - Key Fields: `id`
+    - Payments
+        - Table Name: `payments`
+        - Key Field: `payment_id`
+    - Purchase Limit:
+        - Table Name: `purchase_limits`
 - Transformations: none
