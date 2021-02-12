@@ -93,7 +93,7 @@ class CustomerInfo(CatalogStream):
             current_page += 1
             for customer in customers:
                 new_bookmark = set_latest_bookmark(current=new_bookmark,
-                                                   compared=customer['last_updated'])
+                                                   compared=customer['last_update'])
                 singer.write_bookmark(self.state,
                                       self.tap_stream_id,
                                       self.replication_key,
