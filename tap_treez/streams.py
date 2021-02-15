@@ -1,7 +1,9 @@
 import singer
 from datetime import datetime
+from .client import TreezClient
 
 from singer import bookmarks
+from singer import logger
 
 LOGGER = singer.get_logger()
 
@@ -108,6 +110,8 @@ class TicketInfo(CatalogStream):
     object_type = 'TICKET'
 
     def sync(self, **kwargs):
+        client_restart = 0
+        record_count = 0
         response_length = 50
         current_page = 1
         last_updated_at = singer.get_bookmark(self.state,
@@ -116,20 +120,28 @@ class TicketInfo(CatalogStream):
         if last_updated_at == None:
             last_updated_at = '2000-01-01T00:00:00.000-00:00'
         new_bookmark = last_updated_at
-        while response_length >= 50:
+        while response_length >= 25:
+            LOGGER.info(f'{record_count}, {client_restart}')
             response = self.client.fetch_tickets(
                 page=current_page, last_updated_date=last_updated_at)
-            tickets = response.get('ticketList', [])
-            response_length = len(tickets)
-            current_page += 1
-            for ticket in tickets:
-                new_bookmark = set_latest_bookmark(current=new_bookmark,
-                                                   compared=ticket['last_updated_at'])
-                singer.write_bookmark(self.state,
-                                      self.tap_stream_id,
-                                      self.replication_key,
-                                      new_bookmark)
-                yield ticket
+            if response['ticketList'] != None:
+                tickets = response['ticketList']
+                response_length = len(tickets)
+                current_page += 1
+                for ticket in tickets:
+                    record_count +=1
+                    new_bookmark = set_latest_bookmark(current=new_bookmark,
+                                                    compared=ticket['last_updated_at'])
+                    singer.write_bookmark(self.state,
+                                        self.tap_stream_id,
+                                        self.replication_key,
+                                        new_bookmark)
+                    yield ticket
+            else:
+                client_restart += 1
+                self.client.fetch_token()
+                LOGGER.info(f'{response}')
+                continue
 
 STREAMS = {
   'products': ProductInfo,
