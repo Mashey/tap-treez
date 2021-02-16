@@ -1,5 +1,5 @@
 import singer
-from datetime import datetime
+from datetime import datetime, timedelta
 from .client import TreezClient
 
 from singer import bookmarks
@@ -109,7 +109,7 @@ class TicketInfo(CatalogStream):
                                                 self.tap_stream_id,
                                                 self.replication_key)
         if last_updated_at == None:
-            last_updated_at = '2020-01-01T00:00:00.000-00:00'
+            last_updated_at = '2021-02-17T00:00:00.000-00:00'
 
         while response_length >= 25:
             response = self.client.fetch_tickets(
@@ -129,8 +129,55 @@ class TicketInfo(CatalogStream):
                 continue
 
 
+class TicketHistorical(FullTableStream):
+    tap_stream_id = 'tickets'
+    key_properties = ['ticket_id']
+    replication_key = 'date_closed'
+    object_type = 'TICKET'
+
+    def sync(self, **kwargs):
+
+        last_date_ran = singer.get_bookmark(self.state,
+                                            self.tap_stream_id,
+                                            self.replication_key)
+
+        if last_date_ran == None:
+            last_date_ran = '2021-01-01'
+
+        while last_date_ran != '2021-02-17':
+            # Go through all the pages for each date
+            response_length = 25
+            current_page = 1
+            while response_length >= 25:
+                response = self.client.fetch_tickets_historical(page=current_page,
+                                                                closed_date=last_date_ran)
+
+                if 'ticketList' in response:
+                    tickets = response['ticketList']
+                    response_length = len(tickets)
+                    current_page += 1
+                    for ticket in tickets:
+                        yield ticket
+
+                else:
+                    LOGGER.info('A new API Token is being fetched.')
+                    self.client.fetch_token()
+                    LOGGER.info(f'{response}')
+                    continue
+
+            # Now add a date to the last_date_run to get the next day
+            last_date_ran = datetime.strftime((datetime.strptime(last_date_ran, "%Y-%m-%d") + timedelta(days=1)),
+                                              "%Y-%m-%d")
+            LOGGER.info(f'Next Date is {last_date_ran}')
+            singer.write_bookmark(self.state,
+                                  self.tap_stream_id,
+                                  self.replication_key,
+                                  last_date_ran)
+
+
 STREAMS = {
   'products': ProductInfo,
   'customers': CustomerInfo,
-  'tickets': TicketInfo
+  'tickets': TicketInfo,
+  'tickets_historical': TicketHistorical
 }
