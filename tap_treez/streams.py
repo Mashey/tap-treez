@@ -75,7 +75,7 @@ class CustomerInfo(CatalogStream):
                                                 self.tap_stream_id,
                                                 self.replication_key)
         if last_updated == None:
-            last_updated = '2020-01-01T00:00:00.000-00:00'
+            last_updated = '2017-07-01T00:00:00.000-00:00'
 
         while response_length >= 50:
             response = self.client.fetch_customers(
@@ -141,6 +141,9 @@ class TicketHistorical(FullTableStream):
                                             self.tap_stream_id,
                                             self.replication_key)
 
+        # Change the last_date_ran to 2017-07-01 and
+        # in the while loop to stop at 2020-12-31
+
         if last_date_ran == None:
             last_date_ran = '2021-01-01'
 
@@ -178,6 +181,6 @@ class TicketHistorical(FullTableStream):
 STREAMS = {
   'products': ProductInfo,
   'customers': CustomerInfo,
-  'tickets': TicketInfo,
-  'tickets_historical': TicketHistorical
+  'tickets_historical': TicketHistorical,
+  'tickets': TicketInfo
 }
