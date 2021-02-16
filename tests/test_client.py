@@ -1,4 +1,5 @@
 import pytest
+import time
 from tap_treez.client import TreezClient
 
 import os
@@ -16,6 +17,26 @@ def test_fetch_access_token():
                          api_key=api_key, dispensary=dispensary)
 
     assert isinstance(client._client.headers['authorization'], str)
+
+
+@pytest.mark.vcr()
+def test_token_refresh():
+    client = TreezClient(client_id=client_id,
+                         api_key=api_key, dispensary=dispensary)
+
+    token = client.authorization_token
+    expiration_date = client.token_expiration
+    time.sleep(30)
+    client.fetch_token()
+
+    token_2 = client.authorization_token
+    assert token != token_2
+
+    client.fetch_token()
+    token_3 = client.authorization_token
+    expiration_date_3 = client.token_expiration
+    assert token_2 != token_3
+    assert expiration_date_3 != expiration_date
 
 
 @pytest.mark.vcr()
