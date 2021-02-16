@@ -42,6 +42,10 @@ class TreezClient:
         url = f'{self.BASE_URL}/{self.dispensary}/ticket/lastUpdated/after/{last_updated_date}/page/{page}/pagesize/25'
         return self._client.get(url).json()
 
+    def fetch_tickets_historical(self, page, closed_date):
+        url = f'{self.BASE_URL}/{self.dispensary}/ticket/closedate/{closed_date}/page/{page}/pagesize/25'
+        return self._client.get(url).json()
+
     def fetch_token(self):
         self._client = requests.Session()
         url = f'{self.BASE_URL}/{self.dispensary}/config/api/gettokens'
