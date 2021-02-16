@@ -116,9 +116,14 @@
                 "additionalProperties": false,
                 "properties": {
                     "result_type": {"type": ["null", "string"]},
-                    "amount": {"type": ["null", "string"]},
-                    "minimum_value": {"type": ["null", "number"]},
-                    "maximum_value": {"type": ["null", "number"]},
+                    "amount": {
+                        "type": ["object", "null"],
+                        "additionalProperties": false,
+                        "properties": {
+                            "minimum_value": {"type": ["null", "number"]},
+                            "maximum_value": {"type": ["null", "number"]}
+                            }
+                        },
                     "amount_type": {"type": ["null", "string"]}
                 }
             }
@@ -137,3 +142,4 @@
         }
     }
 }
+

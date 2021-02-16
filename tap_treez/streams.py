@@ -1,19 +1,11 @@
 import singer
-from datetime import datetime
+from datetime import datetime, timedelta
+from .client import TreezClient
 
 from singer import bookmarks
+from singer import logger
 
 LOGGER = singer.get_logger()
-
-def set_latest_bookmark(current, compared):
-    current_time = datetime.strptime(current.split('.')[0], "%Y-%m-%dT%H:%M:%S")
-    compared_time = datetime.strptime(compared.split('.')[0], "%Y-%m-%dT%H:%M:%S")
-    if compared_time >= current_time:
-        formatted_time = str(compared_time) + '.000-07:00'
-        return formatted_time.replace(' ', 'T')
-    else:
-        formatted_time = str(current_time) + '.000-07:00'
-        return formatted_time.replace(' ', 'T')
 
 
 class Stream:
@@ -50,24 +42,24 @@ class ProductInfo(CatalogStream):
                                               self.tap_stream_id,
                                               self.replication_key)
         if last_updated_at == None:
-            last_updated_at = '2000-01-01T00:00:00.000-00:00'
-        
-        new_bookmark = last_updated_at
+            last_updated_at = '2020-01-01T00:00:00.000-00:00'
+
         while response_length >= 50:
             response = self.client.fetch_products(
                 page=current_page, last_updated_date=last_updated_at)
             
-            products = response.get('data', {}).get('product_list', [])
-            response_length = len(products)
-            current_page += 1
-            for product in products:
-                new_bookmark = set_latest_bookmark(current=new_bookmark,
-                                                   compared=product['last_updated_at'])
-                singer.write_bookmark(self.state,
-                                      self.tap_stream_id,
-                                      self.replication_key,
-                                      new_bookmark)
-                yield product
+            if 'product_list' in response['data']:
+                products = response['data']['product_list']
+                response_length = len(products)
+                current_page += 1
+                for product in products:
+                    yield product
+
+            else:
+                LOGGER.info('A new API Token is being fetched.')
+                self.client.fetch_token()
+                LOGGER.info(f'{response}')
+                continue
 
 
 class CustomerInfo(CatalogStream):
@@ -83,22 +75,25 @@ class CustomerInfo(CatalogStream):
                                                 self.tap_stream_id,
                                                 self.replication_key)
         if last_updated == None:
-            last_updated = '2000-01-01T00:00:00.000-00:00'
-        new_bookmark = last_updated
+            last_updated = '2017-07-01T00:00:00.000-00:00'
+
         while response_length >= 50:
             response = self.client.fetch_customers(
                 page=current_page, last_updated_date=last_updated)
-            customers = response.get('data', [])
-            response_length = len(customers)
-            current_page += 1
-            for customer in customers:
-                new_bookmark = set_latest_bookmark(current=new_bookmark,
-                                                   compared=customer['last_update'])
-                singer.write_bookmark(self.state,
-                                      self.tap_stream_id,
-                                      self.replication_key,
-                                      new_bookmark)
-                yield customer
+
+            if 'data' in response:
+                customers = response['data']
+                response_length = len(customers)
+                current_page += 1
+                for customer in customers:
+                    yield customer
+
+            else:
+                LOGGER.info('A new API Token is being fetched.')
+                self.client.fetch_token()
+                LOGGER.info(f'{response}')
+                continue
+
 
 
 class TicketInfo(CatalogStream):
@@ -108,31 +103,84 @@ class TicketInfo(CatalogStream):
     object_type = 'TICKET'
 
     def sync(self, **kwargs):
-        response_length = 50
+        response_length = 25
         current_page = 1
         last_updated_at = singer.get_bookmark(self.state,
                                                 self.tap_stream_id,
                                                 self.replication_key)
         if last_updated_at == None:
-            last_updated_at = '2000-01-01T00:00:00.000-00:00'
-        new_bookmark = last_updated_at
-        while response_length >= 50:
+            last_updated_at = '2021-02-17T00:00:00.000-00:00'
+
+        while response_length >= 25:
             response = self.client.fetch_tickets(
                 page=current_page, last_updated_date=last_updated_at)
-            tickets = response.get('ticketList', [])
-            response_length = len(tickets)
-            current_page += 1
-            for ticket in tickets:
-                new_bookmark = set_latest_bookmark(current=new_bookmark,
-                                                   compared=ticket['last_updated_at'])
-                singer.write_bookmark(self.state,
-                                      self.tap_stream_id,
-                                      self.replication_key,
-                                      new_bookmark)
-                yield ticket
+
+            if 'ticketList' in response:
+                tickets = response['ticketList']
+                response_length = len(tickets)
+                current_page += 1
+                for ticket in tickets:
+                    yield ticket
+
+            else:
+                LOGGER.info('A new API Token is being fetched.')
+                self.client.fetch_token()
+                LOGGER.info(f'{response}')
+                continue
+
+
+class TicketHistorical(FullTableStream):
+    tap_stream_id = 'tickets'
+    key_properties = ['ticket_id']
+    replication_key = 'date_closed'
+    object_type = 'TICKET'
+
+    def sync(self, **kwargs):
+
+        last_date_ran = singer.get_bookmark(self.state,
+                                            self.tap_stream_id,
+                                            self.replication_key)
+
+        # Change the last_date_ran to 2017-07-01 and
+        # in the while loop to stop at 2020-12-31
+
+        if last_date_ran == None:
+            last_date_ran = '2021-01-01'
+
+        while last_date_ran != '2021-02-17':
+            # Go through all the pages for each date
+            response_length = 25
+            current_page = 1
+            while response_length >= 25:
+                response = self.client.fetch_tickets_historical(page=current_page,
+                                                                closed_date=last_date_ran)
+
+                if 'ticketList' in response:
+                    tickets = response['ticketList']
+                    response_length = len(tickets)
+                    current_page += 1
+                    for ticket in tickets:
+                        yield ticket
+
+                else:
+                    LOGGER.info('A new API Token is being fetched.')
+                    self.client.fetch_token()
+                    LOGGER.info(f'{response}')
+                    continue
+
+            # Now add a date to the last_date_run to get the next day
+            last_date_ran = datetime.strftime((datetime.strptime(last_date_ran, "%Y-%m-%d") + timedelta(days=1)),
+                                              "%Y-%m-%d")
+            LOGGER.info(f'Next Date is {last_date_ran}')
+            singer.write_bookmark(self.state,
+                                  self.tap_stream_id,
+                                  self.replication_key,
+                                  last_date_ran)
+
 
 STREAMS = {
   'products': ProductInfo,
   'customers': CustomerInfo,
+  'tickets_historical': TicketHistorical,
   'tickets': TicketInfo
 }
