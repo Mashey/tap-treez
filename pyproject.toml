@@ -19,6 +19,9 @@ pytest-cov = "^2.11.1"
 vcrpy = "^4.1.1"
 pytest-vcr = "^1.0.2"
 
+[tool.poetry.scripts]
+tap-treez = 'tap_treez:main'
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
