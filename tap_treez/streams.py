@@ -181,6 +181,6 @@ class TicketHistorical(FullTableStream):
 STREAMS = {
   'products': ProductInfo,
   'customers': CustomerInfo,
-  'tickets_historical': TicketHistorical,
-  'tickets': TicketInfo
+  'tickets': TicketHistorical,
+#   'tickets': TicketInfo
 }
