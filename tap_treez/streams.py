@@ -157,18 +157,18 @@ class TicketHistorical(FullTableStream):
     @limits(calls=4, period=2)
     def sync(self, **kwargs):
 
-        last_date_ran = singer.get_bookmark(self.state,
-                                            self.tap_stream_id,
-                                            self.replication_key)
+        # last_date_ran = singer.get_bookmark(self.state,
+        #                                     self.tap_stream_id,
+        #                                     self.replication_key)
 
         # Change the last_date_ran to 2017-07-01 and
         # in the while loop to stop at 2020-12-31
 
-        if last_date_ran == None:
-            last_date_ran = '2021-01-01'
+        # if last_date_ran == None:
+        last_date_ran = '2017-07-01'
 
         LOGGER.info(f'Starting date: {last_date_ran}')
-        while last_date_ran != '2021-02-17':
+        while last_date_ran != '2021-01-01':
             # Go through all the pages for each date
             tickets_this_day = 0
             response_length = 25
