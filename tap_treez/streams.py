@@ -4,6 +4,7 @@ from .client import TreezClient
 
 from singer import bookmarks
 from singer import logger
+from ratelimit import limits, sleep_and_retry
 
 LOGGER = singer.get_logger()
 
@@ -35,7 +36,10 @@ class ProductInfo(CatalogStream):
     replication_key = 'last_updated_at'
     object_type    = 'PRODUCT'
 
+    @sleep_and_retry
+    @limits(calls=5, period=2)
     def sync(self, **kwargs):
+        product_count = 0
         response_length = 50
         current_page = 1
         last_updated_at = singer.get_bookmark(self.state,
@@ -48,11 +52,17 @@ class ProductInfo(CatalogStream):
             response = self.client.fetch_products(
                 page=current_page, last_updated_date=last_updated_at)
             
+            LOGGER.info(f'{response.keys()}')
+            if 'fault' in response:
+                LOGGER.info(f"{response['fault']}")
+
             if 'product_list' in response['data']:
+                LOGGER.info(f'Products written: {product_count}')
                 products = response['data']['product_list']
                 response_length = len(products)
                 current_page += 1
                 for product in products:
+                    product_count += 1
                     yield product
 
             else:
@@ -68,7 +78,10 @@ class CustomerInfo(CatalogStream):
     replication_key = 'last_update'
     object_type = 'CUSTOMER'
 
+    @sleep_and_retry
+    @limits(calls=4, period=2)
     def sync(self, **kwargs):
+        customer_count = 0
         response_length = 50
         current_page = 1
         last_updated = singer.get_bookmark(self.state,
@@ -81,11 +94,14 @@ class CustomerInfo(CatalogStream):
             response = self.client.fetch_customers(
                 page=current_page, last_updated_date=last_updated)
 
+            LOGGER.info(f'{response.keys()}')
             if 'data' in response:
+                LOGGER.info(f'Customers written: {customer_count}')
                 customers = response['data']
                 response_length = len(customers)
                 current_page += 1
                 for customer in customers:
+                    customer_count += 1
                     yield customer
 
             else:
@@ -102,6 +118,8 @@ class TicketInfo(CatalogStream):
     replication_key = 'last_updated_at'
     object_type = 'TICKET'
 
+    @sleep_and_retry
+    @limits(calls=4, period=2)
     def sync(self, **kwargs):
         response_length = 25
         current_page = 1
@@ -135,6 +153,8 @@ class TicketHistorical(FullTableStream):
     replication_key = 'date_closed'
     object_type = 'TICKET'
 
+    @sleep_and_retry
+    @limits(calls=4, period=2)
     def sync(self, **kwargs):
 
         last_date_ran = singer.get_bookmark(self.state,
@@ -147,8 +167,10 @@ class TicketHistorical(FullTableStream):
         if last_date_ran == None:
             last_date_ran = '2021-01-01'
 
+        LOGGER.info(f'Starting date: {last_date_ran}')
         while last_date_ran != '2021-02-17':
             # Go through all the pages for each date
+            tickets_this_day = 0
             response_length = 25
             current_page = 1
             while response_length >= 25:
@@ -156,10 +178,12 @@ class TicketHistorical(FullTableStream):
                                                                 closed_date=last_date_ran)
 
                 if 'ticketList' in response:
+                    LOGGER.info(f'Tickets for {last_date_ran} written: {tickets_this_day}')
                     tickets = response['ticketList']
                     response_length = len(tickets)
                     current_page += 1
                     for ticket in tickets:
+                        tickets_this_day += 1
                         yield ticket
 
                 else:
