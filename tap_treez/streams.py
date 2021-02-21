@@ -62,11 +62,6 @@ class ProductInfo(CatalogStream):
                 response_length = len(products)
                 current_page += 1
                 for product in products:
-                    singer.write_bookmark(self.state,
-                                          self.tap_stream_id,
-                                          self.replication_key,
-                                          product['last_updated_at'])
-                    singer.write_state(self.state)
                     product_count += 1
                     yield product
 
@@ -106,11 +101,6 @@ class CustomerInfo(CatalogStream):
                 response_length = len(customers)
                 current_page += 1
                 for customer in customers:
-                    singer.write_bookmark(self.state,
-                                          self.tap_stream_id,
-                                          self.replication_key,
-                                          customer['last_update'])
-                    singer.write_state(self.state)
                     customer_count += 1
                     yield customer
 
