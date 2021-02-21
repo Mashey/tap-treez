@@ -138,6 +138,11 @@ class TicketInfo(CatalogStream):
                 response_length = len(tickets)
                 current_page += 1
                 for ticket in tickets:
+                    singer.write_bookmark(self.state,
+                                          self.tap_stream_id,
+                                          self.replication_key,
+                                          ticket['last_updated_at'])
+                    singer.write_state(self.state)
                     yield ticket
 
             else:
@@ -168,11 +173,12 @@ class TicketHistorical(FullTableStream):
         last_date_ran = '2017-07-01'
 
         LOGGER.info(f'Starting date: {last_date_ran}')
-        while last_date_ran != '2021-01-01':
+        while last_date_ran != '2018-07-01':
             # Go through all the pages for each date
             tickets_this_day = 0
             response_length = 25
             current_page = 1
+
             while response_length >= 25:
                 response = self.client.fetch_tickets_historical(page=current_page,
                                                                 closed_date=last_date_ran)
@@ -200,11 +206,12 @@ class TicketHistorical(FullTableStream):
                                   self.tap_stream_id,
                                   self.replication_key,
                                   last_date_ran)
+            singer.write_state(self.state)
 
 
 STREAMS = {
-  'products': ProductInfo,
-  'customers': CustomerInfo,
-  'tickets': TicketHistorical,
+#   'products': ProductInfo,
+#   'customers': CustomerInfo,
+  'tickets': TicketHistorical
 #   'tickets': TicketInfo
 }
