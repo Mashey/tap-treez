@@ -62,6 +62,11 @@ class ProductInfo(CatalogStream):
                 response_length = len(products)
                 current_page += 1
                 for product in products:
+                    singer.write_bookmark(self.state,
+                                          self.tap_stream_id,
+                                          self.replication_key,
+                                          product['last_updated_at'])
+                    singer.write_state(self.state)
                     product_count += 1
                     yield product
 
@@ -101,6 +106,11 @@ class CustomerInfo(CatalogStream):
                 response_length = len(customers)
                 current_page += 1
                 for customer in customers:
+                    singer.write_bookmark(self.state,
+                                          self.tap_stream_id,
+                                          self.replication_key,
+                                          customer['last_update'])
+                    singer.write_state(self.state)
                     customer_count += 1
                     yield customer
 
@@ -138,6 +148,11 @@ class TicketInfo(CatalogStream):
                 response_length = len(tickets)
                 current_page += 1
                 for ticket in tickets:
+                    singer.write_bookmark(self.state,
+                                          self.tap_stream_id,
+                                          self.replication_key,
+                                          ticket['last_updated_at'])
+                    singer.write_state(self.state)
                     yield ticket
 
             else:
@@ -173,6 +188,7 @@ class TicketHistorical(FullTableStream):
             tickets_this_day = 0
             response_length = 25
             current_page = 1
+
             while response_length >= 25:
                 response = self.client.fetch_tickets_historical(page=current_page,
                                                                 closed_date=last_date_ran)
@@ -200,6 +216,7 @@ class TicketHistorical(FullTableStream):
                                   self.tap_stream_id,
                                   self.replication_key,
                                   last_date_ran)
+            singer.write_state(self.state)
 
 
 STREAMS = {

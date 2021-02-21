@@ -49,6 +49,7 @@ def sync(config, state, catalog):
                     replication_key, 
                     datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000-07:00"))
             LOGGER.info(f"Total Records written: {records}")
+            singer.write_state(state)
 
 
     LOGGER.info(f'Records written: {records}')
