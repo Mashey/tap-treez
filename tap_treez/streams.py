@@ -173,7 +173,7 @@ class TicketHistorical(FullTableStream):
         last_date_ran = '2017-07-01'
 
         LOGGER.info(f'Starting date: {last_date_ran}')
-        while last_date_ran != '2021-01-01':
+        while last_date_ran != '2018-07-01':
             # Go through all the pages for each date
             tickets_this_day = 0
             response_length = 25
@@ -210,8 +210,8 @@ class TicketHistorical(FullTableStream):
 
 
 STREAMS = {
-  'products': ProductInfo,
-  'customers': CustomerInfo,
-  'tickets': TicketHistorical,
+#   'products': ProductInfo,
+#   'customers': CustomerInfo,
+  'tickets': TicketHistorical
 #   'tickets': TicketInfo
 }
