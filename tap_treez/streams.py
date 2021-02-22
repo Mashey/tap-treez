@@ -170,10 +170,10 @@ class TicketHistorical(FullTableStream):
         # in the while loop to stop at 2020-12-31
 
         # if last_date_ran == None:
-        last_date_ran = '2018-07-01'
+        last_date_ran = '2019-07-01'
 
         LOGGER.info(f'Starting date: {last_date_ran}')
-        while last_date_ran != '2019-07-01':
+        while last_date_ran != '2020-07-01':
             # Go through all the pages for each date
             tickets_this_day = 0
             response_length = 25
