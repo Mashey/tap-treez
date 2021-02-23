@@ -1,11 +1,14 @@
 
 import singer
+import logging
 from singer import Transformer, metadata
 from tap_treez.client import TreezClient
 from tap_treez.streams import STREAMS
 from datetime import datetime, timezone
 
 LOGGER = singer.get_logger()
+
+logger_2 = logging.getLogger(__name__)
 
 
 def sync(config, state, catalog):
@@ -21,6 +24,14 @@ def sync(config, state, catalog):
             replication_key = stream_obj.replication_key
             stream_schema = stream.schema.to_dict()
             stream_metadata = metadata.to_map(stream.metadata)
+
+            LOGGER.info(f'This is the state keys: {state.keys()}')
+            LOGGER.debug(f'This is the state keys: {state.keys()}')
+            LOGGER.critical(f'This is the state keys: {state.keys()}')
+
+            logger_2.info(f'This is the state keys: {state.keys()}')
+            logger_2.debug(f'This is the state keys: {state.keys()}')
+            logger_2.critical(f'This is the state keys: {state.keys()}')
 
             LOGGER.info('Staring sync for stream: %s', tap_stream_id)
 
