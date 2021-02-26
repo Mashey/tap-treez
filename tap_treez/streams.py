@@ -47,7 +47,7 @@ class ProductInfo(CatalogStream):
                                               self.replication_key)
         if last_updated_at == None:
             last_updated_at = datetime.strftime(
-                (datetime.now() - timedelta(days=1), "%Y-%m-%dT%H:%M:%S.000-07:00")
+                (datetime.now() - timedelta(days=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
 
         while response_length >= 50:
             response = self.client.fetch_products(
