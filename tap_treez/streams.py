@@ -47,7 +47,7 @@ class ProductInfo(CatalogStream):
                                               self.replication_key)
         if last_updated_at == None:
             last_updated_at = datetime.strftime(
-                (datetime.now() - timedelta(hours=1), "%Y-%m-%dT%H:%M:%S.000-07:00")
+                (datetime.now() - timedelta(days=1), "%Y-%m-%dT%H:%M:%S.000-07:00")
 
         while response_length >= 50:
             response = self.client.fetch_products(
@@ -90,7 +90,7 @@ class CustomerInfo(CatalogStream):
                                                 self.replication_key)
         if last_updated == None:
             last_updated = datetime.strftime(
-                (datetime.now() - timedelta(hours=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
+                (datetime.now() - timedelta(days=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
 
         while response_length >= 50:
             response = self.client.fetch_customers(
@@ -130,7 +130,7 @@ class TicketInfo(CatalogStream):
                                                 self.replication_key)
         if last_updated_at == None:
             last_updated_at = datetime.strftime(
-                (datetime.now() - timedelta(hours=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
+                (datetime.now() - timedelta(days=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
 
         while response_length >= 25:
             response = self.client.fetch_tickets(
@@ -217,8 +217,8 @@ class TicketInfo(CatalogStream):
 
 
 STREAMS = {
-  'products': ProductInfo,
+  'tickets': TicketInfo,
   'customers': CustomerInfo,
-  'tickets': TicketInfo
+  'products': ProductInfo
 #   'tickets': TicketHistorical
 }
