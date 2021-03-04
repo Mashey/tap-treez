@@ -50,7 +50,7 @@ def sync(config, state, catalog):
                 singer.write_bookmark(state, 
                     tap_stream_id, 
                     replication_key, 
-                    datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000-07:00"))
+                    datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000Z"))
             LOGGER.info(f"Total Records written: {records}")
             singer.write_state(state)
 

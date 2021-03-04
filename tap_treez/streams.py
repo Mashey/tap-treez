@@ -47,7 +47,7 @@ class ProductInfo(CatalogStream):
                                               self.replication_key)
         if last_updated_at == None:
             last_updated_at = datetime.strftime(
-                datetime.now(), "%Y-%m-%dT00:00:00.000-07:00")
+                datetime.now(), "%Y-%m-%dT00:00:00.000Z")
 
         while response_length >= 50:
             response = self.client.fetch_products(
@@ -86,7 +86,7 @@ class CustomerInfo(CatalogStream):
                                                 self.replication_key)
         if last_updated == None:
             last_updated = datetime.strftime(
-                datetime.now(), "%Y-%m-%dT00:00:00.000-07:00")
+                datetime.now(), "%Y-%m-%dT00:00:00.000Z")
 
         while response_length >= 50:
             response = self.client.fetch_customers(
@@ -126,7 +126,7 @@ class TicketInfo(CatalogStream):
                                                 self.replication_key)
         if last_updated_at == None:
             last_updated_at = datetime.strftime(
-                datetime.now(), "%Y-%m-%dT00:00:00.000-07:00")
+                datetime.now(), "%Y-%m-%dT00:00:00.000Z")
 
         while response_length >= 25:
             response = self.client.fetch_tickets(
