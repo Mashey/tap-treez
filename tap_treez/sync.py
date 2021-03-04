@@ -25,14 +25,6 @@ def sync(config, state, catalog):
             stream_schema = stream.schema.to_dict()
             stream_metadata = metadata.to_map(stream.metadata)
 
-            LOGGER.info(f'This is the state keys: {state.keys()}')
-            LOGGER.debug(f'This is the state keys: {state.keys()}')
-            LOGGER.critical(f'This is the state keys: {state.keys()}')
-
-            logger_2.info(f'This is the state keys: {state.keys()}')
-            logger_2.debug(f'This is the state keys: {state.keys()}')
-            logger_2.critical(f'This is the state keys: {state.keys()}')
-
             LOGGER.info('Staring sync for stream: %s', tap_stream_id)
 
             state = singer.set_currently_syncing(state, tap_stream_id)
