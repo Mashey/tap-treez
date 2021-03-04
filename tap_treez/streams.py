@@ -47,16 +47,12 @@ class ProductInfo(CatalogStream):
                                               self.replication_key)
         if last_updated_at == None:
             last_updated_at = datetime.strftime(
-                (datetime.now() - timedelta(days=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
+                datetime.now(), "%Y-%m-%dT00:00:00.000-07:00")
 
         while response_length >= 50:
             response = self.client.fetch_products(
                 page=current_page, last_updated_date=last_updated_at)
             
-            LOGGER.info(f'{response.keys()}')
-            if 'fault' in response:
-                LOGGER.info(f"{response['fault']}")
-
             if 'product_list' in response['data']:
                 LOGGER.info(f'Products written: {product_count}')
                 products = response['data']['product_list']
@@ -90,7 +86,7 @@ class CustomerInfo(CatalogStream):
                                                 self.replication_key)
         if last_updated == None:
             last_updated = datetime.strftime(
-                (datetime.now() - timedelta(days=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
+                datetime.now(), "%Y-%m-%dT00:00:00.000-07:00")
 
         while response_length >= 50:
             response = self.client.fetch_customers(
@@ -114,111 +110,111 @@ class CustomerInfo(CatalogStream):
 
 
 
-# class TicketInfo(CatalogStream):
-#     tap_stream_id = 'tickets'
-#     key_properties = ['ticket_id']
-#     replication_key = 'last_updated_at'
-#     object_type = 'TICKET'
+class TicketInfo(CatalogStream):
+    tap_stream_id = 'tickets'
+    key_properties = ['ticket_id']
+    replication_key = 'last_updated_at'
+    object_type = 'TICKET'
 
-#     @sleep_and_retry
-#     @limits(calls=4, period=2)
-#     def sync(self, **kwargs):
-#         response_length = 25
-#         current_page = 1
-#         last_updated_at = singer.get_bookmark(self.state,
-#                                                 self.tap_stream_id,
-#                                                 self.replication_key)
-#         if last_updated_at == None:
-#             last_updated_at = datetime.strftime(
-#                 (datetime.now() - timedelta(days=1)), "%Y-%m-%dT%H:%M:%S.000-07:00")
+    @sleep_and_retry
+    @limits(calls=4, period=2)
+    def sync(self, **kwargs):
+        response_length = 25
+        current_page = 1
+        last_updated_at = singer.get_bookmark(self.state,
+                                                self.tap_stream_id,
+                                                self.replication_key)
+        if last_updated_at == None:
+            last_updated_at = datetime.strftime(
+                datetime.now(), "%Y-%m-%dT00:00:00.000-07:00")
 
-#         while response_length >= 25:
-#             response = self.client.fetch_tickets(
-#                 page=current_page, last_updated_date=last_updated_at)
+        while response_length >= 25:
+            response = self.client.fetch_tickets(
+                page=current_page, last_updated_date=last_updated_at)
 
-#             if 'ticketList' in response:
-#                 tickets = response['ticketList']
-#                 response_length = len(tickets)
-#                 current_page += 1
-#                 for ticket in tickets:
-#                     singer.write_bookmark(self.state,
-#                                           self.tap_stream_id,
-#                                           self.replication_key,
-#                                           ticket['last_updated_at'])
-#                     singer.write_state(self.state)
-#                     yield ticket
+            if 'ticketList' in response:
+                tickets = response['ticketList']
+                response_length = len(tickets)
+                current_page += 1
+                for ticket in tickets:
+                    singer.write_bookmark(self.state,
+                                          self.tap_stream_id,
+                                          self.replication_key,
+                                          ticket['last_updated_at'])
+                    singer.write_state(self.state)
+                    yield ticket
 
-#             else:
-#                 LOGGER.info('A new API Token is being fetched.')
-#                 self.client.fetch_token()
-#                 LOGGER.info(f'{response}')
-#                 continue
+            else:
+                LOGGER.info('A new API Token is being fetched.')
+                self.client.fetch_token()
+                LOGGER.info(f'{response}')
+                continue
 
 # The class below was used to do a backfill.  Because the API ordered the last
 # updated tickets from newest to olded - trying to iterate in reverse while new
 # tickets were coming in caused duplicates frequently.  So for backfill the closed
 # at end point was used.
 
-class TicketHistorical(FullTableStream):
-    tap_stream_id = 'tickets'
-    key_properties = ['ticket_id']
-    replication_key = 'date_closed'
-    object_type = 'TICKET'
+# class TicketHistorical(FullTableStream):
+#     tap_stream_id = 'tickets'
+#     key_properties = ['ticket_id']
+#     replication_key = 'date_closed'
+#     object_type = 'TICKET'
 
-    @sleep_and_retry
-    @limits(calls=4, period=2)
-    def sync(self, **kwargs):
+#     @sleep_and_retry
+#     @limits(calls=4, period=2)
+#     def sync(self, **kwargs):
 
-        # last_date_ran = singer.get_bookmark(self.state,
-        #                                     self.tap_stream_id,
-        #                                     self.replication_key)
+#         # last_date_ran = singer.get_bookmark(self.state,
+#         #                                     self.tap_stream_id,
+#         #                                     self.replication_key)
 
-        # Change the last_date_ran to 2017-07-01 and
-        # in the while loop to stop at 2020-12-31
+#         # Change the last_date_ran to 2017-07-01 and
+#         # in the while loop to stop at 2020-12-31
 
-        # if last_date_ran == None:
-        last_date_ran = '2021-02-15'
+#         # if last_date_ran == None:
+#         last_date_ran = '2021-02-15'
 
-        LOGGER.info(f'Starting date: {last_date_ran}')
-        while last_date_ran != '2021-03-04':
-            # Go through all the pages for each date
-            tickets_this_day = 0
-            response_length = 25
-            current_page = 1
+#         LOGGER.info(f'Starting date: {last_date_ran}')
+#         while last_date_ran != '2021-03-04':
+#             # Go through all the pages for each date
+#             tickets_this_day = 0
+#             response_length = 25
+#             current_page = 1
 
-            while response_length >= 25:
-                response = self.client.fetch_tickets_historical(page=current_page,
-                                                                closed_date=last_date_ran)
+#             while response_length >= 25:
+#                 response = self.client.fetch_tickets_historical(page=current_page,
+#                                                                 closed_date=last_date_ran)
 
-                if 'ticketList' in response:
-                    LOGGER.info(f'Tickets for {last_date_ran} written: {tickets_this_day}')
-                    tickets = response['ticketList']
-                    response_length = len(tickets)
-                    current_page += 1
-                    for ticket in tickets:
-                        tickets_this_day += 1
-                        yield ticket
+#                 if 'ticketList' in response:
+#                     LOGGER.info(f'Tickets for {last_date_ran} written: {tickets_this_day}')
+#                     tickets = response['ticketList']
+#                     response_length = len(tickets)
+#                     current_page += 1
+#                     for ticket in tickets:
+#                         tickets_this_day += 1
+#                         yield ticket
 
-                else:
-                    LOGGER.info('A new API Token is being fetched.')
-                    self.client.fetch_token()
-                    LOGGER.info(f'{response}')
-                    continue
+#                 else:
+#                     LOGGER.info('A new API Token is being fetched.')
+#                     self.client.fetch_token()
+#                     LOGGER.info(f'{response}')
+#                     continue
 
-            # Now add a date to the last_date_run to get the next day
-            last_date_ran = datetime.strftime((datetime.strptime(last_date_ran, "%Y-%m-%d") + timedelta(days=1)),
-                                              "%Y-%m-%d")
-            LOGGER.info(f'Next Date is {last_date_ran}')
-            singer.write_bookmark(self.state,
-                                  self.tap_stream_id,
-                                  self.replication_key,
-                                  last_date_ran)
-            singer.write_state(self.state)
+#             # Now add a date to the last_date_run to get the next day
+#             last_date_ran = datetime.strftime((datetime.strptime(last_date_ran, "%Y-%m-%d") + timedelta(days=1)),
+#                                               "%Y-%m-%d")
+#             LOGGER.info(f'Next Date is {last_date_ran}')
+#             singer.write_bookmark(self.state,
+#                                   self.tap_stream_id,
+#                                   self.replication_key,
+#                                   last_date_ran)
+#             singer.write_state(self.state)
 
 
 STREAMS = {
   'products': ProductInfo,
   'customers': CustomerInfo,
-#   'tickets': TicketInfo
-  'tickets': TicketHistorical
+  'tickets': TicketInfo
+#   'tickets': TicketHistorical
 }
