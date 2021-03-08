@@ -46,11 +46,6 @@ def sync(config, state, catalog):
                 )
                 records += 1
             
-            if replication_key != 'date_closed':
-                singer.write_bookmark(state, 
-                    tap_stream_id, 
-                    replication_key, 
-                    datetime.now().strftime("%Y-%m-%dT%H:%M:%S.000Z"))
             LOGGER.info(f"Total Records written: {records}")
             singer.write_state(state)
 
