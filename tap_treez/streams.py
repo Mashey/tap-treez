@@ -9,6 +9,9 @@ from ratelimit import limits, sleep_and_retry
 LOGGER = singer.get_logger()
 
 
+
+
+
 class Stream:
     tap_stream_id           = None
     key_properties          = []
