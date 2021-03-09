@@ -8,9 +8,7 @@ from ratelimit import limits, sleep_and_retry
 
 LOGGER = singer.get_logger()
 
-def bookmark_time():
-    return datetime.strftime((datetime.now() + timedelta(seconds=1)),
-                             "%Y-%m-%dT%H:%M:%S.000Z")
+
 
 
 
@@ -54,11 +52,6 @@ class ProductInfo(CatalogStream):
             last_updated_at = datetime.strftime(
                 datetime.now(), "%Y-%m-%dT00:00:00.000Z")
 
-        singer.write_bookmark(self.state,
-                              self.tap_stream_id,
-                              self.replication_key,
-                              bookmark_time())
-
         while response_length >= 50:
             response = self.client.fetch_products(
                 page=current_page, last_updated_date=last_updated_at)
@@ -97,11 +90,6 @@ class CustomerInfo(CatalogStream):
         if last_updated == None:
             last_updated = datetime.strftime(
                 datetime.now(), "%Y-%m-%dT00:00:00.000Z")
-
-        singer.write_bookmark(self.state,
-                              self.tap_stream_id,
-                              self.replication_key,
-                              bookmark_time())
 
         while response_length >= 50:
             response = self.client.fetch_customers(
@@ -142,11 +130,6 @@ class TicketInfo(CatalogStream):
         if last_updated_at == None:
             last_updated_at = datetime.strftime(
                 datetime.now(), "%Y-%m-%dT00:00:00.000Z")
-
-        singer.write_bookmark(self.state,
-                              self.tap_stream_id,
-                              self.replication_key,
-                              bookmark_time())
 
         while response_length >= 25:
             response = self.client.fetch_tickets(
