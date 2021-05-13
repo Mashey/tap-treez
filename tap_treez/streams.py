@@ -217,7 +217,7 @@ class TicketInfo(CatalogStream):
 
 STREAMS = {
   'products': ProductInfo,
-  'customers': CustomerInfo,
+#   'customers': CustomerInfo,
   'tickets': TicketInfo
 #   'tickets': TicketHistorical
 }
