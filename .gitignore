@@ -9,6 +9,6 @@ poetry.lock
 tap_treez.egg-info
 config.json
 catalog.json
-test.json
+*.json
 state.json
 outputs
